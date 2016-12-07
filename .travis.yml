@@ -1,13 +1,15 @@
+sudo: required
 os: osx
 osx_image: xcode7.3
-rvm:
-  - 2.2.5
+language: ruby
+services:
+  - docker
 before_install:
-  - gem update --system
-  - gem --version
+  - sudo gem install bundler
+  - sudo gem --version
 install:
-  - bundle install
-  - bundle exec rake install
-script: bundle exec rake
+  - sudo bundle install
+  - sudo bundle exec rake install
+script: sudo bundle exec rake
 env:
   - TRAVIS=true
