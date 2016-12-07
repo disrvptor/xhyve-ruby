@@ -8,7 +8,18 @@ RSpec.describe Xhyve::Guest do
     cmdline = 'earlyprintk=true console=ttyS0 user=console opt=vda tce=vda'
     uuid =   SecureRandom.uuid  # '32e54269-d1e2-4bdf-b4ff-bbe0eb42572d' #
 
-    @guest = Xhyve::Guest.new(kernel: kernel, initrd: initrd, cmdline: cmdline, blockdevs: blockdev, uuid: uuid, serial: 'com1')
+    @guest = Xhyve::Guest.new(
+		kernel: kernel,
+		initrd: initrd,
+		cmdline: cmdline,           # boot flags to linux
+		blockdevs: blockdev,
+		uuid: uuid,
+		serial: 'com1',             # com1 / com2 (maps to ttyS0, ttyS1, etc)
+	    memory: '200M',             # amount of memory in M/G
+	    processors: 1,              # number of processors
+	    networking: true,           # use sudo? (required for network unless signed)
+	    acpi: true                  # set up acpi? (required for clean shutdown)
+	)
     @guest.start
   end
 
@@ -46,6 +57,6 @@ RSpec.describe Xhyve::Guest do
   end
 
   it 'Correctly sets memory' do
-    expect(on_guest(@guest.ip, "free -mm | grep 'Mem:' | awk '{print $2}'").to_i).to be_within(50).of(500)
+    expect(on_guest(@guest.ip, "free -mm | grep 'Mem:' | awk '{print $2}'").to_i).to be_within(50).of(200)
   end
 end unless ENV['TRAVIS']

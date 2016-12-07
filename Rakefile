@@ -14,6 +14,7 @@ RSpec::Core::RakeTask.new(:spec)
 
 desc 'Build xhyve binary'
 task :vendor do
+  FileUtils.mkdir_p('tmp')
   Dir.chdir('tmp') do
     unless Dir.exist?('xhyve/.git')
       system('git clone https://github.com/mist64/xhyve.git') || fail('Could not clone xhyve')
