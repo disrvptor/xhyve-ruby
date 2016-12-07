@@ -1,4 +1,4 @@
-![](https://travis-ci.org/dalehamel/xhyve-ruby.svg)
+![](https://travis-ci.org/disrvptor/xhyve-ruby.svg)
 
 # Ruby Xhyve
 
