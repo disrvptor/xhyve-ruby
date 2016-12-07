@@ -1,6 +1,9 @@
 require 'rake/extensiontask'
 require 'rspec/core/rake_task'
 require 'fileutils'
+require 'sys/cpu'
+
+include Sys
 
 XHYVE_TMP = 'tmp/xhyve'
 
@@ -27,6 +30,20 @@ task :vendor do
   end
   FileUtils.mkdir_p('lib/xhyve/vendor')
   FileUtils.cp('tmp/xhyve/build/xhyve', 'lib/xhyve/vendor')
+end
+
+desc 'Describe CPU'
+task :cpu do
+	puts "VERSION: " + CPU::VERSION
+	puts "Load Average: " + CPU.load_avg.join(", ")
+	puts "CPU Freq (speed): " + CPU.freq.to_s unless RUBY_PLATFORM.match('darwin')
+	puts "Num CPU: " + CPU.num_cpu.to_s
+	puts "Architecture: " + CPU.architecture
+	puts "Machine: " + CPU.machine
+	puts "Model: " + CPU.model
+	system('sysctl -a | grep machdep.cpu.brand_string')
+	system('sysctl -a | grep machdep.cpu.features')
+	system('sysctl -a | grep machdep.cpu.extfeatures')
 end
 
 desc 'Build the ruby gem'

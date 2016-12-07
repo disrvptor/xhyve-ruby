@@ -7,6 +7,8 @@ services:
 before_install:
   - sudo gem install bundler
   - sudo gem --version
+  - sudo gem install sys-cpu
+  - sudo bundle exec rake cpu
 install:
   - sudo bundle install
   - sudo bundle exec rake install
